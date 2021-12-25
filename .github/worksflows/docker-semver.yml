@@ -7,6 +7,8 @@ on:
         required: true
       DockerHubPass:
         required: true
+      DockerHubPrefix:
+        required: true
 
 jobs:
   main:
@@ -25,7 +27,7 @@ jobs:
       - name: Prepare Tags
         id: prep
         run: |
-          IMAGE=thiritin/${GITHUB_REPOSITORY#*/}
+          IMAGE=${{ secrets.DockerHubPrefix }}/${GITHUB_REPOSITORY#*/}
           echo ::set-output name=image::${IMAGE}
       - name: Docker meta
         id: meta
