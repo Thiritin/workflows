@@ -25,7 +25,7 @@ jobs:
       - name: Prepare Tags
         id: prep
         run: |
-          IMAGE=elbgoodsgmbh/${GITHUB_REPOSITORY#*/}
+          IMAGE=thiritin/${GITHUB_REPOSITORY#*/}
           echo ::set-output name=image::${IMAGE}
       - name: Docker meta
         id: meta
