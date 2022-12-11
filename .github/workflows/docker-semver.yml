@@ -57,7 +57,7 @@ jobs:
           path: /tmp/.buildx-cache
           key: ${{ runner.os }}-buildx-${{ github.repository }}
           restore-keys: |
-            ${{ runner.os }}-buildx-
+            ${{ runner.os }}-buildx-${{ github.repository }}
       ######################################################
       # Build!
       ######################################################
@@ -65,7 +65,8 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v2.1.0
         with:
-          cache-from: "type=local,src=/tmp/.buildx-cache"
+          
+          from: "type=local,src=/tmp/.buildx-cache"
           cache-to: "type=local,dest=/tmp/.buildx-cache"
           builder: ${{ steps.buildx.outputs.name }}
           file: ./Dockerfile
