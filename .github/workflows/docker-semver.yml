@@ -31,7 +31,7 @@ jobs:
           echo ::set-output name=image::${IMAGE}
       - name: Docker meta
         id: meta
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v5
         with:
           images: ${{ steps.prep.outputs.image }}
           flavor: |
@@ -47,7 +47,7 @@ jobs:
       ######################################################
       - name: Set up Docker Buildx
         id: buildx
-        uses: docker/setup-buildx-action@v1
+        uses: docker/setup-buildx-action@v3
         with:
           driver-opts: network=host
       ######################################################
@@ -55,7 +55,7 @@ jobs:
       ######################################################
       - name: Build and push
         id: docker_build
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v6
         with:
           cache-from: "type=gha"
           cache-to: "type=gha,mode=max"
@@ -67,11 +67,10 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
       - name: Build and push local
         id: docker_build_local
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v6
         if: ${{ github.ref_name == 'main' }}
         with:
           cache-from: "type=gha"
-          cache-to: "type=gha,mode=max"
           builder: ${{ steps.buildx.outputs.name }}
           file: ./Dockerfile
           target: local
