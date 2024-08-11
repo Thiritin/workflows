@@ -11,6 +11,8 @@ on:
         required: true
       DockerFileLocation:
         required: true
+      DockerTarget:
+        required: true
 
 jobs:
   main:
@@ -63,18 +65,7 @@ jobs:
           cache-to: "type=gha,mode=max"
           builder: ${{ steps.buildx.outputs.name }}
           file: ${{ secrets.DockerFileLocation }}
-          target: production
+          target: ${{ secrets.DockerTarget }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-      - name: Build and push local
-        id: docker_build_local
-        uses: docker/build-push-action@v6
-        if: ${{ github.ref_name == 'main' }}
-        with:
-          cache-from: "type=gha"
-          builder: ${{ steps.buildx.outputs.name }}
-          file: ./Dockerfile
-          target: local
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.prep.outputs.image }}:local
